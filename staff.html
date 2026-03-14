@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>EMS Staff</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<script>
+
+let rank=localStorage.getItem("rank");
+
+if(rank!=="chief" && rank!=="doctor" && rank!=="Medical Student"){
+window.location="login.html";
+}
+
+</script>
+
+<h1 class="title">EMS Staff Dashboard</h1>
+
+<div class="staff">
+
+<h2>Chief</h2>
+<p>Prashant Knight</p>
+
+<h2>Deputy Chief</h2>
+<p>Ionic Knight</p>
+
+<h2>Doctors</h2>
+<ul>
+<li>Souldier Skyrox</li>
+<li>Doctor 2</li>
+<li>Doctor 3</li>
+</ul>
+
+<h2>Medical Student</h2>
+<ul>
+<li>Rik Rok</li>
+<li>Medical Student 2</li>
+</ul>
+
+<br>
+
+<a href="index.html">Back to Home</a>
+
+</div>
+
+</body>
+</html>

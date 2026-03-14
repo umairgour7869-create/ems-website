@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>EMS Uniform</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<script>
+
+let rank=localStorage.getItem("rank");
+
+if(rank!=="chief" && rank!=="doctor" && rank!=="Medical Student"){
+window.location="login.html";
+}
+
+</script>
+
+<h1 class="title03">EMS Uniform Guide</h1>
+
+<div class="uniform-grid">
+
+<div class="uniform-card">
+<img src="uniform1.jpg">
+<h3>Medical Student/Male</h3>
+<p>Headwear:- 01 colour:- 01</p>
+<p>Outweare:- 02 colour:- 07</p>
+<p>Used by EMS Medical Student</p>
+</div>
+
+<div class="uniform-card">
+<img src="uniform2.jpg">
+<h3>Doctor Uniform</h3>
+<p>Standard EMS doctor outfit</p>
+</div>
+
+<div class="uniform-card">
+<img src="uniform3.jpg">
+<h3>Medical Student</h3>
+<p>Field medical staff</p>
+</div>
+
+<div class="uniform-card">
+<img src="uniform4.jpg">
+<h3>Chief Uniform</h3>
+<p>EMS Chief official uniform</p>
+</div>
+
+</div>
+
+<br>
+<a href="index.html">Back to Home</a>
+
+</body>
+</html>

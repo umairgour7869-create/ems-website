@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>EMS Department</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    
+<div class="topbar">
+
+<span id="username"></span>
+
+<!-- Top Credit -->
+<div class="top-credit">
+  This website made by Mohd Umair | Mobile: 7900664616
+</div>
+
+<button onclick="logout()" class="btn">Logout</button>
+
+</div>
+
+<script>
+
+if(localStorage.getItem("login")!=="yes"){
+window.location="login.html";
+}
+
+</script>
+
+<div class="header">
+<h1 class="title01">EMERGENCY MEDICAL SERVICES</h1>
+</div>
+
+<div class="logo">
+<img src="logo01.png" class="circlelogo">
+</div>
+
+<div class="searchbox">
+
+<input type="text" id="search" placeholder="Search section..." class="search" onkeyup="showSuggestions()" onkeypress="handleKey(event)">
+
+<div id="suggestions" class="suggestions"></div>
+
+<button onclick="searchPage()" class="btn">Search</button>
+
+</div>
+
+<h2 class="title02">Live EMS Duty Board</h2>
+
+<div id="dutyBoard"></div>
+
+<script>
+
+function showSuggestions() {
+
+let x = document.getElementById("search").value.toLowerCase();
+let box = document.getElementById("suggestions");
+
+let items = [
+{name:"Bonus System", page:"bonus.html"},
+{name:"Trainee Logs", page:"logs.html"},
+{name:"Giveaway", page:"giveaway.html"},
+{name:"Uniform", page:"uniform.html"},
+{name:"EMS Staff", page:"staff.html"}
+];
+
+box.innerHTML = "";
+
+items.forEach(function(item){
+
+if(item.name.toLowerCase().includes(x) && x !== ""){
+box.innerHTML += '<div onclick="go(\'' + item.page + '\')">' + item.name + '</div>';
+}
+
+});
+
+}
+
+function go(page){
+window.location = page;
+}
+
+function handleKey(event){
+if(event.key === "Enter"){
+let first = document.querySelector("#suggestions div");
+if(first){
+first.click();
+}
+}
+}
+
+let rank=localStorage.getItem("rank");
+
+if(!rank){
+window.location="login.html";
+}
+
+document.getElementById("username").innerText="Logged in as: "+rank;
+
+function logout(){
+
+localStorage.removeItem("rank");
+
+window.location="login.html";
+
+}
+
+function loadDutyBoard(){
+
+let logs=JSON.parse(localStorage.getItem("emslogs")) || [];
+
+let html="";
+
+logs.forEach(function(log){
+
+html+=`
+<div class="logcard">
+<b>${log.name}</b> (${log.rank})<br>
+${log.hospital} ${log.duty} Duty<br>
+On Duty: ${log.on}
+</div>
+`;
+
+});
+
+document.getElementById("dutyBoard").innerHTML=html;
+
+}
+
+loadDutyBoard();
+
+</script>
+
+</body>
+</html>

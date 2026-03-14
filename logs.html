@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>EMS Trainee Logs</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<script>
+
+let rank=localStorage.getItem("rank");
+
+if(rank!=="chief" && rank!=="doctor" && rank!=="Medical Student"){
+window.location="login.html";
+}
+
+</script>
+
+<h1 class="title">EMS Trainee Logs</h1>
+
+<button onclick="chiefLogin()" class="btn">Chief Login</button>
+
+<form class="logform" onsubmit="addLog(event)">
+
+<input type="text" id="name" placeholder="Your Name" required>
+
+<input type="text" id="rank" placeholder="Rank" required>
+
+<label>Hospital</label>
+<select id="hospital" required>
+<option value="">Select Hospital</option>
+<option>PH</option>
+<option>SH</option>
+</select>
+
+<label>Duty Type</label>
+<select id="duty" required>
+<option value="">Select Duty</option>
+<option>Day</option>
+<option>Night</option>
+</select>
+
+<label>On Duty Time</label>
+<input type="time" id="on" required>
+
+<label>Off Duty Time</label>
+<input type="time" id="off" required>
+
+<label>Upload Screenshot</label>
+<input type="file" id="screenshot" accept="image/*">
+
+<img id="preview" class="preview">
+
+<button type="submit" class="btn">Submit Log</button>
+
+</form>
+
+<h2 class="title">Submitted Logs</h2>
+
+<div id="logList"></div>
+
+<br>
+<a href="index.html">Back to Home</a>
+
+<script>
+
+let imageData="";
+let chief=false;
+
+window.onload=function(){
+displayLogs();
+};
+
+document.getElementById("screenshot").addEventListener("change",function(event){
+
+let reader=new FileReader();
+
+reader.onload=function(){
+imageData=reader.result;
+document.getElementById("preview").src=imageData;
+document.getElementById("preview").style.display="block";
+}
+
+reader.readAsDataURL(event.target.files[0]);
+
+});
+
+function addLog(e){
+
+e.preventDefault();
+
+let name=document.getElementById("name").value;
+let rank=document.getElementById("rank").value;
+let hospital=document.getElementById("hospital").value;
+let duty=document.getElementById("duty").value;
+let on=document.getElementById("on").value;
+let off=document.getElementById("off").value;
+
+let onTime=new Date("1970-01-01T"+on+":00");
+let offTime=new Date("1970-01-01T"+off+":00");
+
+let hours=(offTime-onTime)/3600000;
+
+if(hours<0){
+hours=hours+24;
+}
+
+let log={
+name:name,
+rank:rank,
+hospital:hospital,
+duty:duty,
+on:on,
+off:off,
+hours:hours,
+image:imageData
+};
+
+let logs=JSON.parse(localStorage.getItem("emslogs")) || [];
+
+logs.push(log);
+
+localStorage.setItem("emslogs",JSON.stringify(logs));
+
+displayLogs();
+
+document.querySelector(".logform").reset();
+document.getElementById("preview").style.display="none";
+
+}
+
+function displayLogs(){
+
+let logs=JSON.parse(localStorage.getItem("emslogs")) || [];
+
+let html="";
+
+logs.forEach((log,index)=>{
+
+html+=`
+
+<div class="logcard">
+
+<b>${log.name}</b> (${log.rank})<br>
+${log.hospital} ${log.duty} Duty<br>
+On Duty: ${log.on}<br>
+Off Duty: ${log.off}<br>
+Duty Hours: ${log.hours} hrs<br>
+
+${log.image ? `<img src="${log.image}" class="logimg">` : ""}
+
+${chief ? `<button onclick="deleteLog(${index})" class="btn">Delete</button>` : ""}
+
+</div>
+
+`;
+
+});
+
+document.getElementById("logList").innerHTML=html;
+
+}
+
+function deleteLog(i){
+
+let logs=JSON.parse(localStorage.getItem("emslogs"));
+
+logs.splice(i,1);
+
+localStorage.setItem("emslogs",JSON.stringify(logs));
+
+displayLogs();
+
+}
+
+function chiefLogin(){
+
+let pass=prompt("Enter Chief Password");
+
+if(pass==="CH/EMS123"){
+chief=true;
+alert("Chief mode activated");
+displayLogs();
+}else{
+alert("Wrong password");
+}
+
+}
+
+</script>
+
+</body>
+</html>
